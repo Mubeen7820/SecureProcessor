@@ -1,0 +1,331 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div style="margin-bottom: 48px;">
+  <h1 class="page-title" style="letter-spacing: 3px;">ARCHITECTURE SIMULATION</h1>
+  <p class="page-subtitle">Secure Processor internal pipeline and trust execution environment</p>
+</div>
+
+<div class="arch-container">
+  <!-- Processor Pipeline -->
+  <div class="content-card mb-5" style="padding: 0; overflow: hidden;">
+    <div class="card-header"
+      style="padding: 24px 40px; border-bottom: 1px solid var(--card-border); background: var(--card-header-bg); margin: 0;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <i class="fas fa-microchip"></i>
+        <h3>PROCESSOR PIPELINE</h3>
+      </div>
+      <div class="mono" style="color: var(--neon-green); font-size: 10px; font-weight: 950; letter-spacing: 0.5px;">
+        <i class="fas fa-circle" style="font-size: 6px; margin-right: 8px;"></i> ALL UNITS ONLINE
+      </div>
+    </div>
+
+    <div class="pipeline-view"
+      style="min-height: 540px; padding: 40px; position: relative; background-image: radial-gradient(circle at 2px 2px, var(--dot-color) 1px, transparent 0); background-size: 30px 30px;">
+      <!-- Login System -->
+      <div style="position: absolute; top: 60px; left: 80px; width: 220px;" class="pipeline-node">
+        <div class="node-icon-circle" style="color: var(--neon-blue);"><i class="fas fa-shield-halved"></i></div>
+        <div class="mono"
+          style="font-size: 11px; font-weight: 950; color: var(--neon-blue); margin-bottom: 10px; letter-spacing: 0.5px; text-transform: uppercase;">
+          LOGIN SYSTEM</div>
+        <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">Identity verification and credential
+          validation module.</p>
+        <div style="font-size: 9px; margin-top: 20px; color: var(--neon-blue); font-weight: 950;" class="mono"><i
+            class="far fa-circle me-1"></i> ACTIVE</div>
+      </div>
+
+      <!-- Arrow 1 -->
+      <div style="position: absolute; top: 155px; left: 310px; width: 100px;">
+        <div class="pipeline-arrow-line"></div>
+        <div class="mono"
+          style="font-size: 9px; font-weight: 950; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; margin-top: 8px;">
+          CREDENTIALS</div>
+      </div>
+
+      <!-- Access Control -->
+      <div style="position: absolute; top: 60px; left: 420px; width: 220px;" class="pipeline-node">
+        <div class="node-icon-circle" style="color: var(--neon-green);"><i class="fas fa-check-circle"></i></div>
+        <div class="mono"
+          style="font-size: 11px; font-weight: 950; color: var(--neon-green); margin-bottom: 10px; letter-spacing: 0.5px; text-transform: uppercase;">
+          ACCESS CONTROL</div>
+        <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">Role-based policy enforcement and
+          privilege checks.</p>
+        <div style="font-size: 9px; margin-top: 20px; color: var(--neon-green); font-weight: 950;" class="mono"><i
+            class="fas fa-circle me-1"></i> ENFORCED</div>
+      </div>
+
+      <!-- Arrow 2 -->
+      <div style="position: absolute; top: 155px; left: 650px; width: 100px;">
+        <div class="pipeline-arrow-line"></div>
+        <div class="mono"
+          style="font-size: 9px; font-weight: 950; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; margin-top: 8px;">
+          AUTHORIZED?</div>
+      </div>
+
+      <!-- Encryption Unit -->
+      <div style="position: absolute; top: 60px; left: 760px; width: 220px;" class="pipeline-node">
+        <div class="node-icon-circle" style="color: var(--neon-purple);"><i class="fas fa-key"></i></div>
+        <div class="mono"
+          style="font-size: 11px; font-weight: 950; color: var(--neon-purple); margin-bottom: 10px; letter-spacing: 0.5px; text-transform: uppercase;">
+          ENCRYPTION UNIT</div>
+        <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">AES-256 symmetric encryption and
+          decryption engine.</p>
+        <div style="font-size: 9px; margin-top: 20px; color: var(--neon-purple); font-weight: 950;" class="mono"><i
+            class="fas fa-circle me-1"></i> RUNNING</div>
+      </div>
+
+      <!-- Secure Memory (Second Row) -->
+      <div style="position: absolute; top: 320px; left: 250px; width: 220px;" class="pipeline-node">
+        <div class="node-icon-circle" style="color: var(--accent-color);"><i class="fas fa-database"></i></div>
+        <div class="mono"
+          style="font-size: 11px; font-weight: 950; color: var(--accent-color); margin-bottom: 10px; letter-spacing: 0.5px; text-transform: uppercase;">
+          SECURE MEMORY</div>
+        <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">Isolated address space with hardware
+          encryption.</p>
+        <div style="font-size: 9px; margin-top: 20px; color: var(--accent-color); font-weight: 950;" class="mono"><i
+            class="fas fa-lock me-1"></i> PROTECTED</div>
+      </div>
+
+      <!-- Threat Detector -->
+      <div style="position: absolute; top: 320px; left: 590px; width: 220px;" class="pipeline-node">
+        <div class="node-icon-circle" style="color: var(--neon-red);"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="mono"
+          style="font-size: 11px; font-weight: 950; color: var(--neon-red); margin-bottom: 10px; letter-spacing: 0.5px; text-transform: uppercase;">
+          THREAT DETECTOR</div>
+        <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">Intrusion detection and real-time
+          access logging.</p>
+        <div style="font-size: 9px; margin-top: 20px; color: var(--neon-red); font-weight: 950;" class="mono"><i
+            class="fas fa-bullseye me-1"></i> SCANNING</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Memory Address Space -->
+  <div class="content-card mb-5" style="padding: 32px 40px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 32px;">
+      <i class="fas fa-database" style="color: var(--accent-color); font-size: 18px;"></i>
+      <h3
+        style="font-size: 14px; font-weight: 950; color: var(--text-primary); text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+        MEMORY ADDRESS SPACE (64KB)</h3>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <!-- Kernel Space -->
+      <div
+        style="background: rgba(239, 68, 68, 0.02); border: 1px solid rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="border-left: 3px solid #ef4444; padding-left: 20px;">
+          <div
+            style="font-family: var(--font-mono); font-size: 12px; font-weight: 950; color: #ef4444; margin-bottom: 4px; letter-spacing: 1px;">
+            KERNEL SPACE</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); opacity: 0.6;">
+            0x0000 - 0x0FFF</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 32px;">
+          <span
+            style="background: rgba(239, 68, 68, 0.08); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 700;">Admin
+            Only</span>
+          <div style="width: 120px; height: 6px; background: rgba(0,0,0,0.05); border-radius: 3px; overflow: hidden;">
+            <div style="width: 85%; height: 100%; background: #ef4444; border-radius: 3px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Space -->
+      <div
+        style="background: rgba(37, 99, 235, 0.02); border: 1px solid rgba(37, 99, 235, 0.1); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="border-left: 3px solid #2563eb; padding-left: 20px;">
+          <div
+            style="font-family: var(--font-mono); font-size: 12px; font-weight: 950; color: #2563eb; margin-bottom: 4px; letter-spacing: 1px;">
+            USER SPACE</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); opacity: 0.6;">
+            0x1000 - 0x7FFF</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 32px;">
+          <span
+            style="background: rgba(37, 99, 235, 0.08); color: #2563eb; border: 1px solid rgba(37, 99, 235, 0.2); padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 700;">Assigned
+            Users</span>
+          <div style="width: 120px; height: 6px; background: rgba(0,0,0,0.05); border-radius: 3px; overflow: hidden;">
+            <div style="width: 45%; height: 100%; background: #2563eb; border-radius: 3px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shared Buffer -->
+      <div
+        style="background: rgba(245, 158, 11, 0.02); border: 1px solid rgba(245, 158, 11, 0.1); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="border-left: 3px solid #f59e0b; padding-left: 20px;">
+          <div
+            style="font-family: var(--font-mono); font-size: 12px; font-weight: 950; color: #f59e0b; margin-bottom: 4px; letter-spacing: 1px;">
+            SHARED BUFFER</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); opacity: 0.6;">
+            0x8000 - 0xBFFF</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 32px;">
+          <span
+            style="background: rgba(245, 158, 11, 0.08); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 700;">Admin
+            + User</span>
+          <div style="width: 120px; height: 6px; background: rgba(0,0,0,0.05); border-radius: 3px; overflow: hidden;">
+            <div style="width: 20%; height: 100%; background: #f59e0b; border-radius: 3px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crypto Engine -->
+      <div
+        style="background: rgba(139, 92, 246, 0.02); border: 1px solid rgba(139, 92, 246, 0.1); border-radius: 12px; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="border-left: 3px solid #8b5cf6; padding-left: 20px;">
+          <div
+            style="font-family: var(--font-mono); font-size: 12px; font-weight: 950; color: #8b5cf6; margin-bottom: 4px; letter-spacing: 1px;">
+            CRYPTO ENGINE</div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); opacity: 0.6;">
+            0xC000 - 0xFFFF</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 32px;">
+          <span
+            style="background: rgba(139, 92, 246, 0.08); color: #8b5cf6; border: 1px solid rgba(139, 92, 246, 0.2); padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 700;">System
+            Only</span>
+          <div style="width: 120px; height: 6px; background: rgba(0,0,0,0.05); border-radius: 3px; overflow: hidden;">
+            <div style="width: 30%; height: 100%; background: #8b5cf6; border-radius: 3px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layered Architecture -->
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px;">
+    <!-- Hardware Layer -->
+    <div class="content-card" style="padding: 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px;">
+        <div
+          style="width: 14px; height: 14px; border: 1.5px solid var(--text-secondary); border-radius: 4px; opacity: 0.3;">
+        </div>
+        <h4
+          style="font-size: 11px; font-weight: 950; color: var(--text-primary); text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+          HARDWARE LAYER</h4>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          Physical CPU Core</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          Cache Memory (L1/L2/L3)</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          Memory Bus Interface</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          I/O Controller</div>
+      </div>
+    </div>
+
+    <!-- Security Layer -->
+    <div class="content-card" style="padding: 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px;">
+        <div style="width: 14px; height: 14px; border: 1.5px solid #2563eb; border-radius: 4px; opacity: 0.5;"></div>
+        <h4
+          style="font-size: 11px; font-weight: 950; color: #2563eb; text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+          SECURITY LAYER</h4>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          Trust Execution Env (TEE)</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          AES Crypto Engine</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          Role Access Matrix</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          Audit Logger</div>
+      </div>
+    </div>
+
+    <!-- Software Layer -->
+    <div class="content-card" style="padding: 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px;">
+        <div style="width: 14px; height: 14px; border: 1.5px solid #8b5cf6; border-radius: 4px; opacity: 0.5;"></div>
+        <h4
+          style="font-size: 11px; font-weight: 950; color: #8b5cf6; text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+          SOFTWARE LAYER</h4>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          User Authentication</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          Session Management</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          API Gateway</div>
+        <div
+          style="background: var(--input-bg); border-radius: 8px; padding: 12px 18px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          Frontend Interface</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Security Data Flow -->
+  <div class="content-card" style="padding: 32px 40px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 32px;">
+      <i class="fas fa-project-diagram" style="color: var(--accent-color); font-size: 18px;"></i>
+      <h3
+        style="font-size: 14px; font-weight: 950; color: var(--text-primary); text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+        SECURITY DATA FLOW</h3>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      <!-- Step 01 -->
+      <div
+        style="background: rgba(2, 132, 199, 0.02); border: 1px solid rgba(2, 132, 199, 0.1); border-radius: 16px; padding: 32px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <span
+            style="font-family: var(--font-mono); font-size: 24px; font-weight: 950; color: #0284c7; opacity: 0.8;">01</span>
+          <h4 style="font-size: 14px; font-weight: 950; color: #0284c7; margin: 0;">Authentication</h4>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.8; margin: 0;">User submits credentials.
+          System validates against hashed passwords using bcrypt. Failed attempts are logged with timestamp.</p>
+      </div>
+
+      <!-- Step 02 -->
+      <div
+        style="background: rgba(22, 163, 74, 0.02); border: 1px solid rgba(22, 163, 74, 0.1); border-radius: 16px; padding: 32px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <span
+            style="font-family: var(--font-mono); font-size: 24px; font-weight: 950; color: #16a34a; opacity: 0.8;">02</span>
+          <h4 style="font-size: 14px; font-weight: 950; color: #16a34a; margin: 0;">Role Verification</h4>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.8; margin: 0;">Access Control Unit
+          checks user_roles table. Admin gets full memory access; User gets restricted to assigned addresses only.</p>
+      </div>
+
+      <!-- Step 03 -->
+      <div
+        style="background: rgba(139, 92, 246, 0.02); border: 1px solid rgba(139, 92, 246, 0.1); border-radius: 16px; padding: 32px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <span
+            style="font-family: var(--font-mono); font-size: 24px; font-weight: 950; color: #8b5cf6; opacity: 0.8;">03</span>
+          <h4 style="font-size: 14px; font-weight: 950; color: #8b5cf6; margin: 0;">Encryption Engine</h4>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.8; margin: 0;">All data passing to
+          memory is AES-256 encrypted. Keys are managed server-side and never exposed to the frontend.</p>
+      </div>
+
+      <!-- Step 04 -->
+      <div
+        style="background: rgba(220, 38, 38, 0.02); border: 1px solid rgba(220, 38, 38, 0.1); border-radius: 16px; padding: 32px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <span
+            style="font-family: var(--font-mono); font-size: 24px; font-weight: 950; color: #dc2626; opacity: 0.8;">04</span>
+          <h4 style="font-size: 14px; font-weight: 950; color: #dc2626; margin: 0;">Threat Detection</h4>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.8; margin: 0;">Every memory access is
+          logged. Unauthorized attempts trigger critical alerts. Patterns analyzed for intrusion detection.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

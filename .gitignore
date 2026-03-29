@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+.venv/
+__pycache__/
+*.pyc
+data.db
+debug.log
+secret.key
+.vscode/
+desktop.ini
+=======
 # Prerequisites
 *.d
 
@@ -39,3 +49,4 @@
 
 # debug information files
 *.dwo
+>>>>>>> 797b0ccb4d38e9510648e7b79c81cb3f1d7dc2aa
