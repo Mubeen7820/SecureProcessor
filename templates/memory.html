@@ -1,0 +1,395 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div style="margin-bottom: 48px;">
+  <h1 class="page-title" style="letter-spacing: 3px;">MEMORY OPERATIONS</h1>
+  <p class="page-subtitle">Secure encrypted memory read/write interface</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; margin-bottom: 24px;">
+  <!-- Write Operation -->
+  <div class="content-card" style="padding: 24px 32px; display: flex; flex-direction: column;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div
+          style="width: 32px; height: 32px; background: var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-save" style="color: var(--accent-color); font-size: 14px;"></i>
+        </div>
+        <h3
+          style="font-size: 12px; font-weight: 950; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.8px; margin: 0;">
+          WRITE OPERATION</h3>
+      </div>
+      <span class="mono"
+        style="font-size: 10px; font-weight: 950; color: var(--accent-color); border: 1px solid var(--accent-glow); padding: 3px 10px; border-radius: 6px;">AES-256</span>
+    </div>
+
+    <div style="flex: 1;">
+      <div style="margin-bottom: 20px;">
+        <label
+          style="font-size: 10px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px;">MEMORY
+          ADDRESS (0-65535)</label>
+        <input id="write_addr" type="number" placeholder="e.g. 8" oninput="updateHex(this, 'write_hex')"
+          style="width: 100%; background: var(--input-bg); border-radius: 12px; border: none; padding: 14px 20px; font-family: var(--font-mono); font-size: 13px; color: var(--text-primary); outline: none;">
+        <div id="write_hex" class="mono"
+          style="font-size: 10px; color: var(--text-secondary); margin-top: 6px; opacity: 0.7;">→ 0x0000</div>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label
+          style="font-size: 10px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px;">ENTER
+          DATA</label>
+        <textarea id="write_data" placeholder="Enter plaintext data to encrypt and store..."
+          style="width: 100%; background: var(--input-bg); border-radius: 12px; border: none; padding: 14px 20px; font-family: var(--font-mono); font-size: 13px; color: var(--text-primary); outline: none; height: 80px; resize: none;"></textarea>
+      </div>
+    </div>
+
+    <div id="write_status" style="display: none; margin-bottom: 16px;">
+      <div
+        style="background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 12px; padding: 12px 18px; color: #22c55e; font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-check-circle"></i>
+        <span id="write_status_text">Data encrypted and written to 0x0008</span>
+      </div>
+    </div>
+
+    <button id="write_btn" class="btn-primary-custom"
+      style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 48px; font-size: 12px; padding: 0;">
+      <i class="fas fa-play" style="font-size: 10px;"></i> ENCRYPT & WRITE
+    </button>
+  </div>
+
+  <!-- Read Operation -->
+  <div class="content-card" style="padding: 24px 32px; display: flex; flex-direction: column;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div
+          style="width: 32px; height: 32px; background: rgba(139, 92, 246, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-eye" style="color: #8b5cf6; font-size: 14px;"></i>
+        </div>
+        <h3
+          style="font-size: 12px; font-weight: 950; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.8px; margin: 0;">
+          READ OPERATION</h3>
+      </div>
+      <span class="mono"
+        style="font-size: 10px; font-weight: 950; color: #8b5cf6; border: 1px solid rgba(139, 92, 246, 0.2); padding: 3px 10px; border-radius: 6px;">DECRYPT</span>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label
+        style="font-size: 10px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px;">TARGET
+        ADDRESS</label>
+      <input id="read_addr" type="number" placeholder="e.g. 8" oninput="updateHex(this, 'read_hex')"
+        style="width: 100%; background: var(--input-bg); border-radius: 12px; border: none; padding: 14px 20px; font-family: var(--font-mono); font-size: 13px; color: var(--text-primary); outline: none;">
+      <div id="read_hex" class="mono"
+        style="font-size: 10px; color: var(--text-secondary); margin-top: 6px; opacity: 0.7;">→ 0x0000</div>
+    </div>
+
+    <div id="read_results_container"
+      style="flex: 1; display: flex; flex-direction: column; gap: 16px; visibility: hidden; opacity: 0; transition: opacity 0.4s ease;">
+      <div>
+        <label
+          style="font-size: 9px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; letter-spacing: 1px; opacity: 0.8;">DECRYPTED
+          DATA:</label>
+        <div id="decrypted_out" class="mono"
+          style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1); border-radius: 10px; padding: 14px 20px; color: #22c55e; font-size: 15px; font-weight: 950;">
+        </div>
+      </div>
+      <div id="prev_data_section" style="display: none;">
+        <label
+          style="font-size: 9px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; letter-spacing: 1px; opacity: 0.8;">PREVIOUS
+          VALUE / HISTORY:</label>
+        <div id="prev_decrypted_out" class="mono"
+          style="background: rgba(0,0,0,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 12px 18px; color: var(--text-secondary); font-size: 13px; font-weight: 700;">
+          ---</div>
+        <div id="prev_time_out" class="mono"
+          style="font-size: 9px; color: var(--text-secondary); opacity: 0.5; margin-top: 4px;">Last seen: --/--/----
+        </div>
+      </div>
+      <div>
+        <label
+          style="font-size: 9px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; letter-spacing: 1px; opacity: 0.8;">STORED
+          (ENCRYPTED):</label>
+        <div id="encrypted_out" class="mono"
+          style="background: var(--input-bg); border-radius: 10px; padding: 12px 18px; color: var(--text-secondary); font-size: 10px; word-break: break-all; opacity: 0.8; line-height: 1.4;">
+        </div>
+      </div>
+    </div>
+
+    <button id="read_btn" class="btn-primary-custom"
+      style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2); color: #8b5cf6; box-shadow: none; display: flex; align-items: center; justify-content: center; gap: 10px; height: 48px; font-size: 12px; margin-top: 16px; padding: 0;">
+      <i class="fas fa-play" style="font-size: 10px;"></i> READ & DECRYPT
+    </button>
+  </div>
+</div>
+
+<!-- Memory Map Table -->
+<div class="content-card" style="padding: 24px 32px;">
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div
+        style="width: 32px; height: 32px; background: var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+        <i class="fas fa-database" style="color: var(--accent-color); font-size: 14px;"></i>
+      </div>
+      <h3
+        style="font-size: 12px; font-weight: 950; color: var(--text-primary); text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+        MEMORY MAP <span style="color: var(--text-secondary); opacity: 0.5; margin-left: 8px;">({{ mems|length }}
+          cells)</span></h3>
+    </div>
+    <div style="color: var(--text-secondary); cursor: pointer; transition: 0.3s;" onclick="window.location.reload()"
+      title="Refresh Memory Map">
+      <i class="fas fa-sync-alt"></i>
+    </div>
+  </div>
+
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr>
+          <th
+            style="padding: 16px 24px; font-size: 11px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid var(--input-bg);">
+            ADDRESS</th>
+          <th
+            style="padding: 16px 24px; font-size: 11px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid var(--input-bg);">
+            ENCRYPTED DATA</th>
+          <th
+            style="padding: 16px 24px; font-size: 11px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid var(--input-bg);">
+            OWNER</th>
+          <th
+            style="padding: 16px 24px; font-size: 11px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid var(--input-bg);">
+            TIMESTAMP</th>
+          <th
+            style="padding: 16px 24px; font-size: 11px; font-weight: 950; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid var(--input-bg); text-align: right;">
+            ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in mems %}
+        <tr style="border-bottom: 1px solid var(--card-border); transition: 0.2s;">
+          <td style="padding: 16px 24px;">
+            <div class="mono" style="font-size: 12px; font-weight: 950; color: var(--accent-color);">0x{{ "%04X" |
+              format(m.address) }} <span style="font-weight: 600; opacity: 0.4; font-size: 10px; margin-left: 5px;">({{
+                m.address }})</span></div>
+          </td>
+          <td style="padding: 16px 24px;">
+            <div id="table_data_{{ m.address }}" class="mono"
+              data-encrypted="{{ m.encrypted_data or '----------------' }}"
+              style="font-size: 10px; color: var(--text-secondary); opacity: 0.8; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              {{ m.encrypted_data or '----------------' }}</div>
+          </td>
+          <td style="padding: 16px 24px;">
+            <span class="log-event log-event-standard"
+              style="background: rgba(139, 92, 246, 0.08); color: #8b5cf6; padding: 4px 10px; font-size: 9px;">{{
+              m.owner_username.upper() if m.owner_username else 'SYSTEM' }}</span>
+          </td>
+          <td style="padding: 16px 24px;">
+            <div class="mono" style="font-size: 10px; color: var(--text-secondary);">{{ m.timestamp.strftime('%m/%d/%Y,
+              %H:%M') if m.timestamp else '--/--/----' }}</div>
+          </td>
+          <td
+            style="padding: 16px 24px; text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 16px;">
+            <button id="view_btn_{{ m.address }}" onclick="decryptInTable('{{ m.address }}')" data-showing="false"
+              style="background: none; border: none; color: var(--text-secondary); cursor: pointer; opacity: 0.5; transition: 0.3s;"
+              onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="Decrypt Row">
+              <i class="far fa-eye" style="font-size: 16px;"></i>
+            </button>
+            <button onclick="eraseMemory('{{ m.address }}')"
+              style="background: none; border: none; color: #ef4444; cursor: pointer; opacity: 0.5; transition: 0.3s;"
+              onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="Erase Memory">
+              <i class="fas fa-trash-alt" style="font-size: 14px;"></i>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if not mems %}
+    <div
+      style="padding: 60px; text-align: center; color: var(--text-secondary); font-family: var(--font-mono); font-size: 14px; opacity: 0.5;">
+      [SYSTEM READY: NO DATA IN SECURE REGISTERS]
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  function formatHex(val) {
+    if (!val && val !== 0) return '0x0000';
+    let hex = parseInt(val).toString(16).toUpperCase();
+    return '0x' + hex.padStart(4, '0');
+  }
+
+  function updateHex(input, targetId) {
+    const target = document.getElementById(targetId);
+    target.innerText = '→ ' + formatHex(input.value);
+  }
+
+  async function eraseMemory(addr) {
+    if (!confirm(`Are you sure you want to permanently erase memory at address ${addr}?`)) return;
+
+    try {
+      const res = await fetch('/api/memory/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          address: parseInt(addr)
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.location.reload();
+      } else {
+        alert(data.error || 'Failed to erase memory');
+      }
+    } catch (e) {
+      alert('System error during erase operation');
+    }
+  }
+
+  async function decryptInTable(addr) {
+    const tableCell = document.getElementById(`table_data_${addr}`);
+    const viewBtn = document.getElementById(`view_btn_${addr}`);
+    const isShowing = viewBtn.getAttribute('data-showing') === 'true';
+
+    if (isShowing) {
+      // Toggle back to encrypted view
+      tableCell.innerText = tableCell.getAttribute('data-encrypted');
+      tableCell.style.color = 'var(--text-secondary)';
+      tableCell.style.fontWeight = '400';
+      viewBtn.innerHTML = '<i class="far fa-eye" style="font-size: 16px;"></i>';
+      viewBtn.setAttribute('data-showing', 'false');
+
+      // Also hide top card results if it matches
+      if (document.getElementById('read_addr').value == addr) {
+        document.getElementById('read_results_container').style.visibility = 'hidden';
+        document.getElementById('read_results_container').style.opacity = '0';
+      }
+      return;
+    }
+
+    // Set for main read operation top card
+    document.getElementById('read_addr').value = addr;
+
+    // Trigger main read logic to update top card
+    await document.getElementById('read_btn').onclick();
+
+    // Locally update the table cell to show decrypted data in green
+    const res = await fetch('/api/memory/read', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ address: parseInt(addr) })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      tableCell.innerText = data.data || '[NULL]';
+      tableCell.style.color = '#22c55e'; // Green as in pics
+      tableCell.style.fontWeight = '700';
+
+      // Change icon to show result
+      viewBtn.innerHTML = '<i class="fas fa-eye-slash" style="font-size: 16px; color: #8b5cf6; opacity: 1;"></i>';
+      viewBtn.setAttribute('data-showing', 'true');
+    }
+  }
+
+  document.getElementById('read_btn').onclick = async () => {
+    const results = document.getElementById('read_results_container');
+    const decOut = document.getElementById('decrypted_out');
+    const encOut = document.getElementById('encrypted_out');
+    const addr = parseInt(document.getElementById('read_addr').value);
+
+    if (isNaN(addr)) return;
+
+    // Reset and show loading state
+    results.style.visibility = 'visible';
+    results.style.opacity = '0.5';
+    decOut.innerText = 'DECRYPTING...';
+    encOut.innerText = 'FETCHING CIPHERTEXT...';
+
+    try {
+      const res = await fetch('/api/memory/read', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: addr })
+      });
+      const statusCode = res.status;
+      const data = await res.json();
+
+      results.style.opacity = '1';
+      if (!data.success) {
+        decOut.style.color = '#ef4444';
+        decOut.innerText = statusCode === 423 ? '!! SYSTEM LOCKED' : '!! ACCESS DENIED';
+        encOut.style.color = '#ef4444';
+
+        if (statusCode === 423 && data.remaining) {
+          // Live Countdown Logic
+          let secondsLeft = data.remaining;
+          encOut.innerText = `Security lockout: Try again in ${secondsLeft}s.`;
+
+          if (window.lockoutInterval) clearInterval(window.lockoutInterval);
+          window.lockoutInterval = setInterval(() => {
+            secondsLeft--;
+            if (secondsLeft <= 0) {
+              clearInterval(window.lockoutInterval);
+              encOut.innerText = "Lockout period expired. You can try again.";
+              encOut.style.color = "#22c55e";
+              decOut.innerText = "!! READY";
+              decOut.style.color = "var(--text-secondary)";
+            } else {
+              encOut.innerText = `Security lockout: Try again in ${secondsLeft}s.`;
+            }
+          }, 1000);
+        } else {
+          encOut.innerText = data.error || 'UNAUTHORIZED';
+        }
+
+        document.getElementById('prev_data_section').style.display = 'none';
+      } else {
+        decOut.style.color = '#22c55e';
+        decOut.innerText = data.data || '[NULL / EMPTY SECTOR]';
+        encOut.style.color = 'var(--text-secondary)';
+        encOut.innerText = data.encrypted_data || '[NO ENCRYPTED DATA STORED]';
+
+        // Handle Previous Shadow Data
+        const prevSection = document.getElementById('prev_data_section');
+        if (data.previous_data) {
+          prevSection.style.display = 'block';
+          document.getElementById('prev_decrypted_out').innerText = data.previous_data;
+          document.getElementById('prev_time_out').innerText = `Replaced on ${data.previous_timestamp}`;
+        } else {
+          prevSection.style.display = 'none';
+        }
+      }
+    } catch (e) {
+      decOut.innerText = '!! SYSTEM OFFLINE';
+    }
+  }
+
+  document.getElementById('write_btn').onclick = async () => {
+    const status = document.getElementById('write_status');
+    const statusText = document.getElementById('write_status_text');
+    const addr = parseInt(document.getElementById('write_addr').value);
+    const rawData = document.getElementById('write_data').value;
+
+    if (isNaN(addr)) return;
+
+    try {
+      const res = await fetch('/api/memory/write', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: addr, data: rawData })
+      });
+      const data = await res.json();
+      if (data.success) {
+        status.style.display = 'block';
+        statusText.innerText = `Data encrypted and written to ${formatHex(addr)}`;
+        setTimeout(() => {
+          // status.style.display = 'none'; 
+          window.location.reload(); // Reload to update table
+        }, 1500);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+</script>
+{% endblock %}

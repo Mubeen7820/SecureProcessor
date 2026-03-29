@@ -1,0 +1,227 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px;">
+  <div>
+    <h1 class="page-title" style="letter-spacing: 3px;">USER DASHBOARD</h1>
+    <p class="page-subtitle">Welcome back, <span style="color: var(--accent-color); font-weight: 950;">{{
+        session.get('username') }}</span> • Role: <span style="text-transform: uppercase;">{{ session.get('role')
+        }}</span></p>
+  </div>
+  <div
+    style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.2); padding: 10px 20px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
+    <div class="small-dot" style="background: #22c55e; box-shadow: 0 0 10px #22c55e;"></div>
+    <span
+      style="font-family: var(--font-mono); font-size: 10px; font-weight: 950; color: #22c55e; letter-spacing: 1px;">SECURE
+      CONNECTION</span>
+  </div>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); gap: 24px;">
+  <div class="stat-card"
+    style="padding: 32px; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border); position: relative; overflow: hidden;">
+    <div class="stat-icon"
+      style="background: rgba(37, 99, 235, 0.06); color: var(--neon-blue); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+      <i class="fas fa-database"></i>
+    </div>
+    <div class="stat-value mono" style="font-size: 32px; font-weight: 950; margin-bottom: 8px;">{{ stats.mem_cells }}
+    </div>
+    <div class="stat-label"
+      style="font-size: 10px; font-weight: 950; color: var(--text-secondary); opacity: 0.6; letter-spacing: 1px;">MEMORY
+      CELLS</div>
+    <i class="fas fa-chevron-right"
+      style="position: absolute; top: 32px; right: 32px; font-size: 10px; opacity: 0.2;"></i>
+  </div>
+
+  <div class="stat-card"
+    style="padding: 32px; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border); position: relative; overflow: hidden;">
+    <div class="stat-icon"
+      style="background: rgba(139, 92, 246, 0.06); color: var(--neon-purple); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+      <i class="fas fa-file-medical-alt"></i>
+    </div>
+    <div class="stat-value mono" style="font-size: 32px; font-weight: 950; margin-bottom: 8px;">{{ stats.access_logs }}
+    </div>
+    <div class="stat-label"
+      style="font-size: 10px; font-weight: 950; color: var(--text-secondary); opacity: 0.6; letter-spacing: 1px;">ACCESS
+      LOGS</div>
+    <i class="fas fa-chevron-right"
+      style="position: absolute; top: 32px; right: 32px; font-size: 10px; opacity: 0.2;"></i>
+  </div>
+
+  <div class="stat-card"
+    style="padding: 32px; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border); position: relative; overflow: hidden;">
+    <div class="stat-icon"
+      style="background: rgba(239, 68, 68, 0.06); color: var(--neon-red); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <div class="stat-value mono" style="font-size: 32px; font-weight: 950; margin-bottom: 8px;">{{ stats.critical_events
+      }}</div>
+    <div class="stat-label"
+      style="font-size: 10px; font-weight: 950; color: var(--text-secondary); opacity: 0.6; letter-spacing: 1px;">
+      CRITICAL
+      EVENTS</div>
+    <i class="fas fa-chevron-right"
+      style="position: absolute; top: 32px; right: 32px; font-size: 10px; opacity: 0.2;"></i>
+  </div>
+
+  <div class="stat-card"
+    style="padding: 32px; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border); position: relative; overflow: hidden;">
+    <div class="stat-icon"
+      style="background: rgba(34, 197, 94, 0.06); color: var(--neon-green); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+      <i class="fas fa-shield-virus"></i>
+    </div>
+    <div class="stat-value mono" style="font-size: 32px; font-weight: 950; margin-bottom: 8px;">{{ stats.secure_ops }}
+    </div>
+    <div class="stat-label"
+      style="font-size: 10px; font-weight: 950; color: var(--text-secondary); opacity: 0.6; letter-spacing: 1px;">SECURE
+      OPS</div>
+    <i class="fas fa-chevron-right"
+      style="position: absolute; top: 32px; right: 32px; font-size: 10px; opacity: 0.2;"></i>
+  </div>
+</div>
+
+<div class="dashboard-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 32px;">
+  <!-- Processor Status -->
+  <div class="content-card" style="padding: 0;">
+    <div class="card-header" style="border-bottom: 1px solid var(--card-border); padding: 24px 32px;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <i class="fas fa-project-diagram" style="color: var(--accent-color);"></i>
+        <h3 style="font-size: 13px; font-weight: 950; letter-spacing: 1px;">PROCESSOR STATUS</h3>
+      </div>
+    </div>
+    <div class="status-list" style="padding: 24px 32px; display: flex; flex-direction: column; gap: 10px;">
+      <div class="status-item"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: var(--input-bg); border-radius: 14px; border: 1px solid var(--card-border);">
+        <div class="status-item-label" style="display: flex; align-items: center; gap: 12px;">
+          <div class="small-dot" style="background: #22c55e;"></div>
+          <span style="font-weight: 700; font-size: 12px; color: var(--text-secondary);">Auth Unit</span>
+        </div>
+        <div class="mono" style="font-size: 10px; font-weight: 950; color: #22c55e;">ONLINE</div>
+      </div>
+      <div class="status-item"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: var(--input-bg); border-radius: 14px; border: 1px solid var(--card-border);">
+        <div class="status-item-label" style="display: flex; align-items: center; gap: 12px;">
+          <div class="small-dot" style="background: #94a3b8; opacity: 0.3;"></div>
+          <span style="font-weight: 700; font-size: 12px; color: var(--text-secondary);">Encryption Engine</span>
+        </div>
+        <div class="mono" style="font-size: 10px; font-weight: 950; color: #3b82f6;">ACTIVE</div>
+      </div>
+      <div class="status-item"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: var(--input-bg); border-radius: 14px; border: 1px solid var(--card-border);">
+        <div class="status-item-label" style="display: flex; align-items: center; gap: 12px;">
+          <div class="small-dot" style="background: #22c55e;"></div>
+          <span style="font-weight: 700; font-size: 12px; color: var(--text-secondary);">Access Control</span>
+        </div>
+        <div class="mono" style="font-size: 10px; font-weight: 950; color: #16a34a;">ENFORCED</div>
+      </div>
+      <div class="status-item"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: var(--input-bg); border-radius: 14px; border: 1px solid var(--card-border);">
+        <div class="status-item-label" style="display: flex; align-items: center; gap: 12px;">
+          <div class="small-dot" style="background: #8b5cf6;"></div>
+          <span style="font-weight: 700; font-size: 12px; color: var(--text-secondary);">Memory Module</span>
+        </div>
+        <div class="mono" style="font-size: 10px; font-weight: 950; color: #8b5cf6;">{{ stats.mem_cells }} CELLS</div>
+      </div>
+      <div class="status-item"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: var(--input-bg); border-radius: 14px; border: 1px solid var(--card-border);">
+        <div class="status-item-label" style="display: flex; align-items: center; gap: 12px;">
+          <div class="small-dot" style="background: #22c55e;"></div>
+          <span style="font-weight: 700; font-size: 12px; color: var(--text-secondary);">Threat Detector</span>
+        </div>
+        <div class="mono" style="font-size: 10px; font-weight: 950; color: #16a34a;">{{ stats.critical_events }} ALERTS
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="content-card" style="padding: 0;">
+    <div class="card-header" style="border-bottom: 1px solid var(--card-border); padding: 24px 32px;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <i class="fas fa-wave-square" style="color: var(--accent-color);"></i>
+        <h3 style="font-size: 13px; font-weight: 950; letter-spacing: 1px;">RECENT ACTIVITY</h3>
+      </div>
+    </div>
+    <div style="padding: 24px 32px; max-height: 380px; overflow-y: auto;">
+      {% for l in logs %}
+      <div
+        style="background: var(--input-bg); border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+            <div class="small-dot"
+              style="background: {% if l.event_type == 'memory_write' %}#22c55e{% elif l.event_type == 'memory_read' %}#3b82f6{% elif l.event_type == 'memory_erased' %}#ef4444{% else %}#f59e0b{% endif %};">
+            </div>
+            <span
+              style="font-family: var(--font-mono); font-size: 10px; font-weight: 950; color: var(--text-primary); text-transform: uppercase;">{{
+              l.event_type.replace('memory_', '') }}</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-secondary); opacity: 0.7;">{{ l.details }}</div>
+        </div>
+        <div style="text-align: right; display: flex; align-items: center; gap: 16px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 950; color: #16a34a;">INFO</div>
+            <div style="font-size: 10px; color: var(--text-secondary); opacity: 0.5; margin-top: 4px;">{{
+              l.timestamp.strftime('%H:%M:%S %p') }}</div>
+          </div>
+          <button onclick="eraseLog('{{ l.id }}')"
+            style="background: none; border: none; color: #ef4444; cursor: pointer; opacity: 0.3; transition: 0.3s;"
+            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.3'" title="Clear Log Entry">
+            <i class="fas fa-trash-alt" style="font-size: 13px;"></i>
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+      {% if not logs %}
+      <div style="text-align: center; padding: 48px; color: var(--text-secondary); opacity: 0.4;">
+        <i class="fas fa-inbox" style="font-size: 24px; margin-bottom: 12px; display: block;"></i>
+        <div style="font-size: 11px; font-weight: 700;">NO RECENT ACTIVITY</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Access Information -->
+<div style="margin-top: 32px;">
+  <div
+    style="background: rgba(139, 92, 246, 0.03); border: 1px solid rgba(139, 92, 246, 0.1); border-radius: 20px; padding: 24px 32px; display: flex; align-items: center; gap: 24px;">
+    <div
+      style="width: 42px; height: 42px; background: rgba(139, 92, 246, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #8b5cf6;">
+      <i class="fas fa-unlock-alt"></i>
+    </div>
+    <div>
+      <h4
+        style="font-size: 13px; font-weight: 950; color: var(--text-primary); margin-bottom: 4px; letter-spacing: 1px; text-transform: uppercase;">
+        STANDARD USER ACCESS</h4>
+      <p style="font-size: 11px; color: var(--text-secondary); margin: 0; opacity: 0.7;">Limited to assigned memory
+        addresses only. Unauthorized access attempts are logged.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function eraseLog(logId) {
+    if (!confirm('Are you sure you want to clear this activity log entry?')) return;
+
+    try {
+      const response = await fetch('/api/log/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: logId })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        window.location.reload();
+      } else {
+        alert(result.error || 'Failed to clear log entry');
+      }
+    } catch (error) {
+      console.error('Erase Error:', error);
+      alert('System error: connection to security engine lost.');
+    }
+  }
+</script>
+{% endblock %}

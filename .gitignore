@@ -1,0 +1,52 @@
+<<<<<<< HEAD
+.venv/
+__pycache__/
+*.pyc
+data.db
+debug.log
+secret.key
+.vscode/
+desktop.ini
+=======
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Linker files
+*.ilk
+
+# Debugger Files
+*.pdb
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# debug information files
+*.dwo
+>>>>>>> 797b0ccb4d38e9510648e7b79c81cb3f1d7dc2aa
