@@ -61,18 +61,7 @@ def init_db():
         admin = User(username='admin', display_name='System Admin', password_hash=generate_password_hash('adminpass'), role='admin')
         user = User(username='user', display_name='Test User', password_hash=generate_password_hash('userpass'), role='user')
         db.session.add_all([admin, user])
-        # seed memory: addresses 100-109
-        mems = []
-        for i in range(100, 110):
-            if i % 2 == 0:
-                owner_role = 'admin'
-                owner_username = 'admin'
-            else:
-                owner_role = 'user'
-                owner_username = 'user'
-            m = Memory(address=i, encrypted_data=None, owner_role=owner_role, owner_username=owner_username)
-            mems.append(m)
-        db.session.add_all(mems)
+        db.session.add_all([admin, user])
         db.session.commit()
 
 with app.app_context():
@@ -123,15 +112,6 @@ def register():
         
         user = User(username=username, display_name=display_name, password_hash=generate_password_hash(password), role=role)
         db.session.add(user)
-        
-        # Seed some memory for the new user
-        import random
-        addr = random.randint(200, 999)
-        while Memory.query.filter_by(address=addr).first():
-            addr = random.randint(200, 999)
-        
-        mem = Memory(address=addr, encrypted_data=None, owner_role=role, owner_username=username)
-        db.session.add(mem)
         db.session.commit()
         
         flash('Registration successful! Please login.')
