@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div style="margin-bottom: 48px;">
+  <h1 class="page-title" style="letter-spacing: 3px;">ADMIN TERMINAL</h1>
+  <p class="page-subtitle">Welcome back, <span style="color: var(--neon-red); font-weight: 950;">{{
+      session.get('username') }}</span> • System Root Access</p>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon" style="background: rgba(37, 99, 235, 0.08); color: var(--neon-blue);">
+      <i class="fas fa-database"></i>
+    </div>
+    <div class="stat-value mono">{{ stats.mem_cells }}</div>
+    <div class="stat-label">TOTAL CELLS</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background: rgba(139, 92, 246, 0.08); color: var(--neon-purple);">
+      <i class="fas fa-file-alt"></i>
+    </div>
+    <div class="stat-value mono">{{ stats.access_logs }}</div>
+    <div class="stat-label">SYSTEM LOGS</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background: rgba(239, 68, 68, 0.08); color: var(--neon-red);">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <div class="stat-value mono">{{ stats.critical_events }}</div>
+    <div class="stat-label">VIOLATIONS</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background: rgba(34, 197, 94, 0.08); color: var(--neon-green);">
+      <i class="fas fa-microchip"></i>
+    </div>
+    <div class="stat-value mono">{{ stats.secure_ops }}</div>
+    <div class="stat-label">ADMIN OPS</div>
+  </div>
+</div>
+
+<div class="dashboard-row">
+  <!-- Kernel Status -->
+  <div class="content-card">
+    <div class="card-header">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <i class="fas fa-microchip"></i>
+        <h3>KERNEL STATUS</h3>
+      </div>
+    </div>
+    <div class="status-list" style="padding: 24px 32px;">
+      <div class="status-item"
+        style="display: flex; justify-content: space-between; padding: 16px 20px; background: var(--input-bg); border-radius: 14px; margin-bottom: 10px; border: 1px solid var(--card-border);">
+        <div class="status-item-label" style="display: flex; align-items: center; gap: 12px;">
+          <div class="small-dot" style="background: #22c55e; box-shadow: 0 0 10px #22c55e;"></div>
+          <span style="font-weight: 700; font-size: 13px; color: var(--text-secondary);">Auth Subsystem</span>
+        </div>
+        <div class="mono" style="font-size: 11px; font-weight: 950; color: #22c55e;">ACTIVE</div>
+      </div>
+      <div class="status-item"
+        style="display: flex; justify-content: space-between; padding: 16px 20px; background: var(--input-bg); border-radius: 14px; margin-bottom: 10px; border: 1px solid var(--card-border);">
+        <div class="status-item-label" style="display: flex; align-items: center; gap: 12px;">
+          <div class="small-dot" style="background: #2563eb; box-shadow: 0 0 10px #2563eb;"></div>
+          <span style="font-weight: 700; font-size: 13px; color: var(--text-secondary);">AES Engine</span>
+        </div>
+        <div class="mono" style="font-size: 11px; font-weight: 950; color: #2563eb;">STANDBY</div>
+      </div>
+      <div class="status-item"
+        style="display: flex; justify-content: space-between; padding: 16px 20px; background: var(--input-bg); border-radius: 14px; border: 1px solid var(--card-border);">
+        <div class="status-item-label" style="display: flex; align-items: center; gap: 12px;">
+          <div class="small-dot" style="background: #22c55e; box-shadow: 0 0 10px #22c55e;"></div>
+          <span style="font-weight: 700; font-size: 13px; color: var(--text-secondary);">Memory Bus</span>
+        </div>
+        <div class="mono" style="font-size: 11px; font-weight: 950; color: #22c55e;">SECURE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Activity -->
+  <div class="content-card" style="padding: 0;">
+    <div class="card-header" style="border-bottom: 1px solid var(--card-border); padding: 24px 32px;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <i class="fas fa-terminal" style="color: var(--neon-red);"></i>
+        <h3 style="font-size: 13px; font-weight: 950; letter-spacing: 1px;">SYSTEM ACTIVITY LOG</h3>
+      </div>
+    </div>
+    <div style="padding: 24px 32px; max-height: 380px; overflow-y: auto;">
+      {% for l in logs %}
+      <div
+        style="background: var(--input-bg); border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+            <div class="small-dot"
+              style="background: {% if l.event_type in ['failed_login', 'role_violation', 'unauthorized_memory_access'] %}#ef4444{% else %}#64748b{% endif %};">
+            </div>
+            <span
+              style="font-family: var(--font-mono); font-size: 10px; font-weight: 950; color: var(--text-primary); text-transform: uppercase;">{{
+              l.event_type.replace('_', ' ') }}</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-secondary); opacity: 0.7;">{{ l.details }}</div>
+        </div>
+        <div style="text-align: right;">
+          <div
+            style="font-family: var(--font-mono); font-size: 10px; font-weight: 950; color: {% if l.event_type in ['failed_login', 'role_violation', 'unauthorized_memory_access'] %}#ef4444{% else %}#16a34a{% endif %};">
+            {% if l.event_type in ['failed_login', 'role_violation', 'unauthorized_memory_access'] %}CRITICAL{% else
+            %}INFO{% endif %}</div>
+          <div style="font-size: 10px; color: var(--text-secondary); opacity: 0.5; margin-top: 4px;">{{
+            l.timestamp.strftime('%H:%M:%S') }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

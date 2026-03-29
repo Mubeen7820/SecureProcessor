@@ -1,0 +1,160 @@
+{% extends 'layout.html' %}
+{% block auth_content %}
+<div class="auth-page">
+  <div class="auth-container">
+    <!-- Center Icon -->
+    <div class="shield-icon-wrapper">
+      <i class="fas fa-shield-halved fa-2x" style="color: #2563eb;"></i>
+      <div class="status-dot-auth"></div>
+    </div>
+
+    <!-- Title Section -->
+    <div class="text-center">
+      <h1 class="auth-title">SECURE PROCESSOR</h1>
+      <p class="auth-subtitle">TRUSTED COMPUTING SYSTEM v1.0</p>
+    </div>
+
+    <!-- Login/Register Toggle -->
+    <div class="auth-toggle-pill">
+      <a href="{{ url_for('login') }}" class="auth-toggle-btn {% if not register %}active{% endif %}">LOGIN</a>
+      <a href="{{ url_for('register') }}" class="auth-toggle-btn {% if register %}active{% endif %}">REGISTER</a>
+    </div>
+
+    <!-- Error Alerts -->
+    {% if error %}
+    <div class="error-alert">
+      <i class="fas fa-triangle-exclamation"></i>
+      <span>{{ error }}</span>
+    </div>
+    {% endif %}
+
+    <!-- Auth Form -->
+    <form method="POST" action="{% if register %}{{ url_for('register') }}{% else %}{{ url_for('login') }}{% endif %}">
+
+      {% if register %}
+      <div class="mb-4">
+        <label class="field-label d-block mb-2">Display Name</label>
+        <input class="custom-input mono" name="display_name" placeholder="Enter display name" required>
+      </div>
+      {% endif %}
+
+      <div class="mb-3">
+        <label class="field-label d-block mb-1">User Identifier</label>
+        <input class="custom-input mono" name="username" placeholder="user@domain.com" required value="">
+      </div>
+
+      <div class="mb-3">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <label class="field-label mb-1">Access Key</label>
+          {% if not register %}
+          <a href="#" onclick="document.getElementById('forgotPwdModal').style.display='flex'; event.preventDefault();" style="font-size: 10px; color: var(--accent-color); text-decoration: none; font-weight: 700;">Forgot Password?</a>
+          {% endif %}
+        </div>
+        <input class="custom-input mono" name="password" type="password" id="password-field" placeholder="••••••••"
+          required>
+      </div>
+
+      <button type="submit" class="btn-primary-custom" style="margin-bottom: 20px; margin-top: 10px;">
+        {% if register %}Create Account{% else %}Authenticate{% endif %}
+      </button>
+    </form>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPwdModal" onclick="if(event.target===this)this.style.display='none'"
+        style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;">
+        <div
+            style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:24px; padding:40px; width:100%; max-width:400px; box-shadow:0 24px 64px rgba(0,0,0,0.2); position:relative; margin: 16px;">
+            <!-- Header -->
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:32px;">
+                <div
+                    style="width:42px; height:42px; background:var(--accent-glow); border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                    <i class="fas fa-lock-open" style="color:var(--accent-color); font-size:16px;"></i>
+                </div>
+                <div>
+                    <h2
+                        style="font-size:16px; font-weight:950; color:var(--text-primary); margin:0; text-transform:uppercase; letter-spacing:1px;">
+                        Reset Access</h2>
+                    <p style="font-size:11px; color:var(--text-secondary); margin:0;">Recover lost credentials
+                    </p>
+                </div>
+                <button onclick="document.getElementById('forgotPwdModal').style.display='none'"
+                    style="margin-left:auto; background:none; border:none; color:var(--text-secondary); font-size:20px; cursor:pointer; line-height:1; padding:4px 8px;">&times;</button>
+            </div>
+
+            <!-- Fields -->
+            <div style="display:flex; flex-direction:column; gap:20px;">
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">User Identifier</label>
+                    <input id="reset_username" type="text" placeholder="user@domain.com"
+                        style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); border-radius:10px; padding:12px 16px; font-size:13px; color:var(--text-primary); outline:none; box-sizing:border-box; transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='var(--accent-color)'"
+                        onblur="this.style.borderColor='var(--card-border)'">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">New Password</label>
+                    <input id="reset_new_pwd" type="password" placeholder="New Password"
+                        style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); border-radius:10px; padding:12px 16px; font-size:13px; color:var(--text-primary); outline:none; box-sizing:border-box; transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='var(--accent-color)'"
+                        onblur="this.style.borderColor='var(--card-border)'">
+                </div>
+            </div>
+
+            <div id="reset_status" style="margin-top:16px; font-size:12px; font-weight:700; min-height:20px;"></div>
+
+            <div style="height:1px; background:var(--card-border); margin:24px 0;"></div>
+
+            <div style="display:flex; justify-content:center;">
+                <button onclick="doResetPassword()"
+                    style="width: 100%; background:var(--accent-color); color:white; border:none; border-radius:10px; padding:12px 28px; font-size:13px; font-weight:950; cursor:pointer; letter-spacing:0.5px; transition:opacity 0.2s;"
+                    onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Update Credentials</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+      async function doResetPassword() {
+          const username = document.getElementById('reset_username').value;
+          const newPwd = document.getElementById('reset_new_pwd').value;
+          const statusEl = document.getElementById('reset_status');
+
+          if (!username || !newPwd) {
+              statusEl.innerText = '⚠ Please fill in all fields.';
+              statusEl.style.color = '#f59e0b';
+              return;
+          }
+
+          try {
+              const res = await fetch('/api/forgot-password', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ username: username, new_password: newPwd })
+              });
+              const data = await res.json();
+              if (data.success) {
+                  statusEl.innerText = '✔ Password reset successfully!';
+                  statusEl.style.color = '#22c55e';
+                  setTimeout(() => {
+                      document.getElementById('forgotPwdModal').style.display = 'none';
+                      statusEl.innerText = '';
+                  }, 1800);
+              } else {
+                  statusEl.innerText = '✖ ' + (data.error || 'Failed to reset password.');
+                  statusEl.style.color = '#ef4444';
+              }
+          } catch (e) {
+              statusEl.innerText = '✖ System ERROR.';
+              statusEl.style.color = '#ef4444';
+          }
+      }
+    </script>
+
+
+    <!-- Footer -->
+    <div class="d-flex justify-content-center align-items-center gap-2 text-secondary"
+      style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.6;">
+      <i class="fas fa-lock" style="font-size: 11px;"></i>
+      <span>AES-256 ENCRYPTED · ROLE-BASED ACCESS CONTROL</span>
+    </div>
+  </div>
+</div>
+{% endblock %}
