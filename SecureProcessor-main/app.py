@@ -170,7 +170,7 @@ def admin_dashboard():
         'mem_cells': Memory.query.count(),
         'access_logs': Log.query.count(),
         'critical_events': Log.query.filter(Log.event_type.in_(['failed_login', 'role_violation', 'unauthorized_memory_access', 'invalid_address'])).count(),
-        'secure_ops': Log.query.filter(Log.event_type == 'memory_write').count(),
+        'secure_ops': Log.query.filter(Log.event_type.in_(['memory_write', 'memory_read'])).count(),
         'user_count': User.query.count()
     }
     logs = Log.query.order_by(Log.timestamp.desc()).limit(10).all()
@@ -312,6 +312,8 @@ def api_memory_read():
             prev_data = fernet.decrypt(mem.previous_encrypted_data.encode()).decode()
         except Exception:
             prev_data = '[decryption error]'
+
+    log_event('memory_read', f"{session.get('username')} read/decrypted address {addr}")
 
     return jsonify({
         'success': True, 
